@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>
+        </title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link rel="stylesheet" type="text/css" href="public/css/home.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="public/data/jsonIndust.js"></script>
+
+    </head>
+    <body>
+        <p class = "showCategroy">Title</p>
+
+        <ul type="none">
+            <li>a</li>
+            <li>c</li>
+            <li>b</li>
+        </ul>
+
+        <form class = "categoryForm" name = "categoryForm">
+            大類:
+            <select class = "bigC" name = "bigC">
+            </select>
+            中類:
+            <select class = "midC" name = "midC">
+            </select>
+            小類:
+            <select class = "smallC" name = "smallC">
+            </select>
+        </form>
+        <input type="button" class = "inquiryBtn" value ="查詢">
+    </body>
+
+    <script>
+        console.log(IndustRoot);
+        $(document).ready(function(){
+            appendOption(".bigC" , IndustRoot.n)
+            appendOption(".midC",IndustRoot.n[0].n)
+            appendOption(".smallC",IndustRoot.n[0].n[0].n)
+        })
+        $(".bigC").on('change',function(){
+            let bigSelectOptionIndex = $(".bigC")[0].options.selectedIndex;
+            let selectOptionValue = $(".bigC")[0].value
+            appendOption(".midC",IndustRoot.n[bigSelectOptionIndex].n)
+            
+        })
+        $(".midC").on('change',function(){
+            let bigSelectOptionIndex = $(".bigC")[0].options.selectedIndex;
+            let midCelectOptionIndex = $(".midC")[0].options.selectedIndex;
+            let selectOptionValue = $(".midC")[0].value
+            appendOption(".smallC",IndustRoot.n[bigSelectOptionIndex].n[midCelectOptionIndex].n)
+            
+        })
+        function appendOption(select,arr){
+            console.log(arr)
+            $(select).text("")
+            for(let i in arr){
+                $(select).append(
+                    "<option value ='" + arr[i].no +  "'  >" + arr[i].des + "</option>"
+                )
+                
+            }
+        }
+
+        $(".inquiryBtn").click(function(){
+            // $.ajax({
+            //     url:"./inquire.php",
+            //     type:"GET",
+            //     datatype:"json",
+            //     error:function(e){
+            //         console.log(e);
+            //     },
+            //     seccuss:function(result){
+            //         console.log("SS")
+            //         console.log(result)
+            //     },
+            // })
+        })
+    </script>
+</html>
