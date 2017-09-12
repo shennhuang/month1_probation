@@ -1,7 +1,43 @@
-li{
+
+
+li {
     display: inline;
-    margin:10px;
+    margin: 10px;
 }
-.inquiryBtn{
+
+.ui.fluid.dropdown{
+    width:20%;
+    display :inline-block;
+    margin:0 10px;
+}
+
+.inquiryBtn {
     display: inline-block;
-}    
+}
+.ui.table{
+    width : 80%;
+}
+tr{
+    display:flex;
+}
+.indNo{
+    flex:2;
+}
+.indName{
+    flex:2;
+}
+.stayAvg{
+    flex:1;
+}
+.stayMax{
+    flex:1;
+}
+.stayMin{
+    flex:1;
+}
+.stayStd{
+    flex:1;
+}
+.stayCnt{
+    flex:1;
+}
