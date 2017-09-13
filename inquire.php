@@ -18,7 +18,7 @@
  $password = "";
  $dbname = "ncc";
 
- $num = "1002011009";
+ $num = $_POST["ind_cat_no"];
 
 try{
     $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
