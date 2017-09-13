@@ -1,7 +1,41 @@
-li{
-    display: inline;
-    margin:10px;
+
+.title {
+    text-align: center;
 }
-.inquiryBtn{
+
+.ui.fluid.dropdown{
+    width:20%;
+    display :inline-block;
+    margin:0 10px;
+}
+
+.inquiryBtn {
     display: inline-block;
-}    
+}
+.ui.table{
+    width : 80%;
+}
+tr{
+    display:flex;
+}
+.indNo,.indNoShow{
+    flex:2;
+}
+.indName,.indNameShow{
+    flex:2;
+}
+.stayAvg,.stayAvgShow{
+    flex:1;
+}
+.stayMax,.stayMaxShow{
+    flex:1;
+}
+.stayMin,.stayMinShow{
+    flex:1;
+}
+.stayStd,.stayStdShow{
+    flex:1;
+}
+.stayCnt,.stayCntShow{
+    flex:1;
+}

@@ -18,21 +18,33 @@
  $password = "";
  $dbname = "ncc";
 
- $num = $_POST["ind_cat_no"];
+ $num = $_POST['indCatNo'];
 
-try{
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
-    
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT ind_cat_no,cnt,max_month,min_month,avg_month,std_month
-            FROM expjob_indcat_month_group_view
-            WHERE ind_cat_no = :num
-            ";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":num", $num);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_CLASS);
-}catch(PDOException $e) {
-    $result = $e . "QAQ";
+ $regexp = "/^[\d]{10}$/";
+ preg_match($regexp, $num, $matches, PREG_OFFSET_CAPTURE); 
+
+if(!$matches){
+    echo "input Error";
+    return;
 }
+ 
+if ($matches) {
+    try{
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+        
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT ind_cat_no,cnt,max_month,min_month,avg_month,std_month
+                FROM expjob_indcat_month_group_view
+                WHERE ind_cat_no = :num
+                ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":num", $num[0]);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_CLASS);
+    }catch(Exception $e) {
+        $result = $e;
+    }
+}
+
+// $result = $result ;
 echo json_encode($result);

@@ -3,96 +3,129 @@
 
 <head>
 
-    <title>
-    </title>
+    <title>各產業流動API</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+    
+    <link rel="stylesheet" type="text/css" href="public/css/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="public/css/home.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="public/data/jsonIndust.js"></script>
 </head>
 
 <body>
-    <p class="showCategroy">Title</p>
+    <main>
+        <h1 class="title">各產業流動API</h1>
+        
+        <form class="categoryForm" name="categoryForm">
+            
+            大類:<select class="bigC ui fluid search dropdown" name="bigC"></select>
+            中類:<select class="midC ui fluid search dropdown" name="midC"></select>
+            小類:<select class="smallC ui fluid search dropdown" name="smallC"></select>
 
-    <ul type="none">
-        <li>a</li>
-        <li>c</li>
-        <li>b</li>
-    </ul>
+            <button type="button" class="inquiryBtn small ui button">查詢</button>
+        </form>
 
-    <form class="categoryForm" name="categoryForm">
-        大類:
-        <select class="bigC" name="bigC">
-            </select> 中類:
-        <select class="midC" name="midC">
-            </select> 小類:
-        <select class="smallC" name="smallC">
-            </select>
-        <input type="button" class="inquiryBtn" value="查詢">
-    </form>
+        <p class = "errorLog"></p>
 
-    <table>
-        <tr>
-            <th>產業名稱</th>
-            <th>Count</th>
-            <th>Avg</th>
-            <th>Max</th>
-            <th>Min</th>
-            <th>Sdt</th>
+        <table class=" ui striped table">
+            <thead>
+                <tr>
+                    <th class="indNo">產業代碼</th> 
+                    <th class="indName">產業類別</th>
+                    <th class="stayAvg">平均值</th>
+                    <th class="stayMax">最大值</th>
+                    <th class="stayMin">最小值</th>
+                    <th class="stayStd">標準差</th>
+                    <th class="stayCnt">筆數</th>
+                </tr>
+                <tr class = "searchResult">
+                    <td class="indNoShow"></td>
+                    <td class="indNameShow"></td>
+                    <td class="stayAvgShow"></td>
+                    <td class="stayMaxShow"></td>
+                    <td class="stayMinShow"></td>
+                    <td class="stayStdShow"></td>
+                    <td class="stayCntShow"></td>
+                </tr>
+            </thead>
+        </table>
+    </main>
 
-        </tr>
-    </table>
-</body>
-
-<script>
-    console.log(IndustRoot);
-    $(document).ready(function () {
-        appendOption(".bigC", IndustRoot.n)
-        appendOption(".midC", IndustRoot.n[0].n)
-        appendOption(".smallC", IndustRoot.n[0].n[0].n)
-
-        $(".inquiryBtn").click(function () {
-            console.log($(".smallC")[0].value)
-            $.ajax({
-                url: "./inquire.php",
-                type: "POST",
-                data: {
-                    ind_cat_no: $(".smallC")[0].value,
-                },
-                datatype: "json",
-                error: function (e) {
-                    console.log(e);
-                },
-                success: function (result) {
-                    console.log(result)
-                },
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="public/data/jsonIndust.js"></script>
+    <script>
+        $(document).ready(function () {
+            appendOption(".bigC", IndustRoot.n)
+            appendOption(".midC", IndustRoot.n[0].n)
+            appendOption(".smallC", IndustRoot.n[0].n[0].n)
+    
+            $(".inquiryBtn").click(function () {
+                $.ajax({
+                    url: "./inquire.php",
+                    type: "POST",
+                    data: {
+                        indCatNo: $(".smallC")[0].value,
+                    },
+                    dataType: "json",
+                    error: function (e) {
+                        $(".errorLog").html(e) ;
+                    },
+                    success: function (result) {
+                        console.log("ss")
+                        console.log(result)
+                        if(result[0]){
+                            $(".indNoShow").text(result[0].ind_cat.no)
+                            $(".indNameShow").text("??")
+                            $(".stayAvgShow").text(result[0].avg_month)
+                            $(".stayMaxShow").text(result[0].max_month)
+                            $(".stayMinShow").text(result[0].min_month)
+                            $(".stayStdShow").text(result[0].std_month)
+                            $(".stayCntShow").text(result[0].cnt)
+                            return;
+                        }
+                        $errorInfo = result.errorInfo || "Sever error"
+                        $(".errorLog").html($errorInfo);
+                    },
+                })
             })
         })
-    })
-
-    $(".bigC").on('change', function () {
-        let bigSelectOptionIndex = $(".bigC")[0].options.selectedIndex;
-        appendOption(".midC", IndustRoot.n[bigSelectOptionIndex].n)
-
-    })
-    $(".midC").on('change', function () {
-        let bigSelectOptionIndex = $(".bigC")[0].options.selectedIndex;
-        let midCelectOptionIndex = $(".midC")[0].options.selectedIndex;
-        appendOption(".smallC", IndustRoot.n[bigSelectOptionIndex].n[midCelectOptionIndex].n)
-
-    })
-    function appendOption(select, arr) {
-        console.log(arr)
-        $(select).text("")
-        for (let i in arr) {
-            $(select).append(
-                "<option value ='" + arr[i].no + "'  >" + arr[i].des + "</option>"
-            )
-
+        $(".bigC").on('change', function () {
+            let bigSelectOptionIndex = $(".bigC")[0].options.selectedIndex;
+            let selectOptionValue = $(".bigC")[0].value
+            appendOption(".midC", IndustRoot.n[bigSelectOptionIndex].n)
+            appendOption(".smallC", IndustRoot.n[bigSelectOptionIndex].n[0].n)
+        })
+        $(".midC").on('change', function () {
+            let bigSelectOptionIndex = $(".bigC")[0].options.selectedIndex;
+            let midCelectOptionIndex = $(".midC")[0].options.selectedIndex;
+            let selectOptionValue = $(".midC")[0].value
+            appendOption(".smallC", IndustRoot.n[bigSelectOptionIndex].n[midCelectOptionIndex].n)
+    
+        })
+    
+        function appendOption(select, arr) {
+            $(select).text("")
+            for (let i in arr) {
+                $(select).append(
+                    "<option value ='" + arr[i].no + "'  >" + arr[i].des + "</option>"
+                )
+    
+            }
         }
-    }
-</script>
+    
+        function betweenMonth(time) {
+            time = Math.round(time);
+
+            let year = Math.floor(time / 12);
+            year = year == 0 ? "" : year += "年";
+
+            let month = (time % 12);
+            month = month == 0 ? "" : month += "月";
+
+            return year + month || "0月";
+        }
+    </script>
+    
+</body>
+
 
 </html>
