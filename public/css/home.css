@@ -1,6 +1,13 @@
 
+<<<<<<< HEAD
 .title {
     text-align: center;
+=======
+
+li {
+    display: inline;
+    margin: 10px;
+>>>>>>> 5216e50c72f9ac5b964c203384669f05cfe3206c
 }
 
 .ui.fluid.dropdown{
@@ -18,6 +25,7 @@
 tr{
     display:flex;
 }
+<<<<<<< HEAD
 .indNo,.indNoShow{
     flex:2;
 }
@@ -37,5 +45,26 @@ tr{
     flex:1;
 }
 .stayCnt,.stayCntShow{
+=======
+.indNo{
+    flex:2;
+}
+.indName{
+    flex:2;
+}
+.stayAvg{
+    flex:1;
+}
+.stayMax{
+    flex:1;
+}
+.stayMin{
+    flex:1;
+}
+.stayStd{
+    flex:1;
+}
+.stayCnt{
+>>>>>>> 5216e50c72f9ac5b964c203384669f05cfe3206c
     flex:1;
 }
